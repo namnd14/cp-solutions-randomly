@@ -6,6 +6,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LeetCodeProblem {
+    public static void leetcode104() {
+//        TreeNode leaf31 = new TreeNode(3);
+//        TreeNode leaf41 = new TreeNode(4);
+//        TreeNode leaf42 = new TreeNode(4);
+//        TreeNode leaf32 = new TreeNode(3);
+//        TreeNode node21 = new TreeNode(2, leaf31, leaf41);
+//        TreeNode node22 = new TreeNode(2, leaf42, leaf32);
+//        TreeNode root = new TreeNode(1, node21, node22);
+
+        // test case 2
+        TreeNode leaf31 = new TreeNode(3);
+        TreeNode leaf41 = new TreeNode(4);
+        TreeNode leaf42 = new TreeNode(4);
+        TreeNode leaf32 = new TreeNode(3);
+        TreeNode node21 = new TreeNode(2, null, leaf31);
+        TreeNode node22 = new TreeNode(2, null, leaf32);
+        TreeNode root = new TreeNode(1, node21, node22);
+        System.out.println(maxDepth(root));
+    }
+
+    public static int maxDepth(TreeNode root) {
+        int maxDepth = 0;
+        if (root == null) {
+            return maxDepth;
+        }
+
+        List<TreeNode> currentLevel = new ArrayList<>();
+        currentLevel.add(root);
+        while (!currentLevel.isEmpty()) {
+            maxDepth++;
+            List<TreeNode> nextLevel = new ArrayList<>();
+            for (TreeNode treeNode : currentLevel) {
+                if (treeNode.left != null) {
+                    nextLevel.add(treeNode.left);
+                }
+                if (treeNode.right != null) {
+                    nextLevel.add(treeNode.right);
+                }
+            }
+
+            currentLevel = nextLevel;
+        }
+
+        return maxDepth;
+    }
+
     public static void leetcode101() {
 //        TreeNode leaf31 = new TreeNode(3);
 //        TreeNode leaf41 = new TreeNode(4);
