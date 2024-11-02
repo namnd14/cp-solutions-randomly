@@ -1,9 +1,53 @@
 package practice.leetcodeproblem;
 
+import com.sun.source.tree.Tree;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class LeetCodeProblem {
+    public static void leetcode101() {
+//        TreeNode leaf31 = new TreeNode(3);
+//        TreeNode leaf41 = new TreeNode(4);
+//        TreeNode leaf42 = new TreeNode(4);
+//        TreeNode leaf32 = new TreeNode(3);
+//        TreeNode node21 = new TreeNode(2, leaf31, leaf41);
+//        TreeNode node22 = new TreeNode(2, leaf42, leaf32);
+//        TreeNode root = new TreeNode(1, node21, node22);
+
+        // test case 2
+        TreeNode leaf31 = new TreeNode(3);
+        TreeNode leaf41 = new TreeNode(4);
+        TreeNode leaf42 = new TreeNode(4);
+        TreeNode leaf32 = new TreeNode(3);
+        TreeNode node21 = new TreeNode(2, null, leaf31);
+        TreeNode node22 = new TreeNode(2, null, leaf32);
+        TreeNode root = new TreeNode(1, node21, node22);
+        System.out.println(isSymmetric(root));
+    }
+
+    public static boolean isSymmetric(TreeNode root) {
+        return compareTwoNode(root.left, root.right);
+    }
+
+    public static boolean compareTwoNode(TreeNode left, TreeNode right) {
+        if (left == null && right == null) {
+            return true;
+        }
+
+        if (left == null || right == null) {
+            return false;
+        }
+
+        if (left.val != right.val) {
+            return false;
+        }
+
+        if (!compareTwoNode(left.left, right.right)) {
+            return false;
+        }
+        return compareTwoNode(left.right, right.left);
+    }
 
     public static void leetcode83() {
         // Test case 1
