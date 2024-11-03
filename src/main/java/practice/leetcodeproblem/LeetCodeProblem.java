@@ -1,11 +1,137 @@
 package practice.leetcodeproblem;
 
 import com.sun.source.tree.Tree;
+import edu.princeton.cs.algs4.In;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class LeetCodeProblem {
+    public static void leetcode118() {
+        System.out.println(generate(5));
+        System.out.println(generate(1));
+    }
+
+    public static List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> trianglePascal = new ArrayList<>();
+
+        List<Integer> firstRow = new ArrayList<>();
+        firstRow.add(1);
+        trianglePascal.add(firstRow);
+        if (numRows == 1) {
+            return trianglePascal;
+        }
+
+        List<Integer> secondRow = new ArrayList<>();
+        secondRow.add(1);
+        secondRow.add(1);
+        trianglePascal.add(secondRow);
+
+        if (numRows == 2) {
+            return trianglePascal;
+        }
+
+        List<List<Integer>> previousTriangle = generate(numRows - 1);
+        List<Integer> previousRow = previousTriangle.get(previousTriangle.size() - 1);
+        List<Integer> nextRow = new ArrayList<>();
+        nextRow.add(1);
+        for (int i = 0; i < previousRow.size() - 1; i++) {
+            nextRow.add(previousRow.get(i) + previousRow.get((i + 1)));
+        }
+        nextRow.add(1);
+        previousTriangle.add(nextRow);
+
+        return previousTriangle;
+    }
+
+    public static void leetcode169() {
+        int[] nums = {2, 2, 1, 1, 2, 1, 2, 2};
+
+        System.out.println(majorityElement(nums));
+    }
+
+    public static int majorityElement(int[] nums) {
+        Arrays.sort(nums);
+        return nums[nums.length / 2];
+    }
+
+    public static void leetcode108() {
+        int[] nums = {-10, -3, 0, 5, 9};
+        int[] nums2 = {-1, 0, 1, 2};
+        TreeNode result = sortedArrayToBST(nums);
+        System.out.println("Done");
+    }
+
+    public static TreeNode sortedArrayToBST(int[] nums) {
+        int middleIndex = nums.length / 2;
+        int rootValue = nums[middleIndex];
+        TreeNode root = new TreeNode(rootValue);
+
+        if (nums.length == 1) {
+            return root;
+        }
+
+        if (nums.length == 2) {
+            TreeNode left = new TreeNode(nums[0]);
+            root.left = left;
+            return root;
+        }
+
+        if (nums.length == 3) {
+            TreeNode left = new TreeNode(nums[0]);
+            TreeNode right = new TreeNode(nums[(nums.length / 2) + 1]);
+            root.left = left;
+            root.right = right;
+
+            return root;
+        }
+
+        nums.clone();
+
+        int[] leftArr = Arrays.copyOfRange(nums, 0, middleIndex);
+        int[] rightArr = Arrays.copyOfRange(nums, middleIndex + 1, nums.length);
+
+        root.left = sortedArrayToBST(leftArr);
+        root.right = sortedArrayToBST(rightArr);
+
+        return root;
+    }
+
+    public static void leetcode796() {
+        System.out.println(rotateString("a", "a"));
+        System.out.println(rotateString("a", "b"));
+        System.out.println(rotateString("abcde", "cdeab"));
+        System.out.println(rotateString("abcde", "abced"));
+        System.out.println(rotateString("abaa", "aaab"));
+
+
+    }
+
+    public static boolean rotateString(String s, String goal) {
+        // s = 100
+        // for 0 -> 100 - 1
+        // new array = 100 item
+        // return boolean contains goal in array
+        // a - c | b - d | c - e | d - a | e - b
+        List<String> allPossibleRotateString = new ArrayList<>();
+        String[] arr = s.split("");
+
+        for (int i = 0; i < arr.length; i++) {
+            StringBuilder sb = new StringBuilder();
+            for (int j = 0; j < arr.length; j++) {
+                if (i + j >= arr.length) {
+                    sb.append(arr[i + j - arr.length]);
+                } else {
+                    sb.append(arr[i + j]);
+                }
+            }
+            allPossibleRotateString.add(sb.toString());
+        }
+        System.out.println(allPossibleRotateString);
+        return allPossibleRotateString.contains(goal);
+    }
+
     public static void leetcode104() {
 //        TreeNode leaf31 = new TreeNode(3);
 //        TreeNode leaf41 = new TreeNode(4);
