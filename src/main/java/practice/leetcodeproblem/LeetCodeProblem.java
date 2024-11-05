@@ -8,6 +8,233 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LeetCodeProblem {
+    public static void leetcode1414() {
+        System.out.println(findMinFibonacciNumbers(1));
+    }
+
+    public static int findMinFibonacciNumbers(int k) {
+        int minNumbers = 1;
+        int count = 0;
+        int currentSum = 0;
+        List<Integer> storePreviousValue = new ArrayList<>();
+        while (currentSum < k) {
+            count++;
+            storePreviousValue.add(fib(count));
+            currentSum = storePreviousValue.get(storePreviousValue.size() - 1);
+        }
+
+        if (
+                storePreviousValue.get(storePreviousValue.size() - 1) == k
+        ) {
+            return 1;
+        }
+
+        storePreviousValue.remove(storePreviousValue.size() - 1);
+
+        if (storePreviousValue.get(storePreviousValue.size() - 1) == k) {
+            return 1;
+        }
+
+        int remaining = k - storePreviousValue.get(storePreviousValue.size() - 1);
+        while (remaining != 0) {
+            for (int i = 0; i < storePreviousValue.size() - 1; i++) {
+                if (
+                        storePreviousValue.get(i) <= remaining
+                        && storePreviousValue.get(i + 1) > remaining
+                ) {
+                    remaining = remaining - storePreviousValue.get(i);
+                    minNumbers++;
+                }
+            }
+        }
+        return minNumbers;
+    }
+
+    public static int fib(int n) {
+        if (n == 0) {
+            return 0;
+        }
+
+        if (n == 1) {
+            return 1;
+        }
+
+        // memo previous calculation
+        List<Integer> previousResult = new ArrayList<>();
+        previousResult.add(0);
+        previousResult.add(1);
+
+        return supportFibonacci(n, previousResult);
+    }
+
+    public static int supportFibonacci(int n, List<Integer> memo) {
+        if (n <= memo.size() - 1) {
+            return memo.get(n);
+        }
+
+        memo.add(
+                supportFibonacci(n - 1, memo)
+                        + supportFibonacci(n - 2, memo));
+
+        return memo.get(n);
+    }
+
+    public static void leetcode1531() {
+        System.out.println(getLengthOfOptimalCompression("aaabcccd", 2));
+    }
+
+    public static int getLengthOfOptimalCompression(String s, int k) {
+        List<String> allCases = new ArrayList<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (i + k > s.length()) {
+                String currentCase = s.substring(k - (s.length() - i - 1), i + 1);
+                allCases.add(currentCase);
+                continue;
+            }
+            String currentCase = s.substring(0, i) + s.substring(i + k);
+            allCases.add(currentCase);
+        }
+
+        System.out.println(allCases);
+        return 0;
+    }
+
+    public static String runLengthEncoding(String s) {
+        if (s.length() == 1) {
+            return s;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for (int i = 1; i < s.length(); i++) {
+            if (s.charAt(i) != s.charAt(i - 1)) {
+                sb.append(s.charAt(i - 1));
+                if (count != 1) {
+                    sb.append(count);
+                }
+                count = 1;
+
+                if (i == s.length() - 1) {
+                    sb.append(s.charAt(i));
+                }
+            } else {
+                count++;
+
+                if (i == s.length() - 1) {
+                    sb.append(s.charAt(i));
+                    sb.append(count);
+                }
+
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static int compress(char[] chars) {
+        if (chars.length == 1) {
+            return 1;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        int count = 1;
+        for (int i = 1; i < chars.length; i++) {
+            if (chars[i] != chars[i - 1]) {
+                sb.append(chars[i - 1]);
+                if (count != 1) {
+                    sb.append(count);
+                }
+                count = 1;
+
+                if (i == chars.length - 1) {
+                    sb.append(chars[i]);
+                    if (count != 1) {
+                        sb.append(count);
+                    }
+                    break;
+                }
+            } else {
+                count++;
+
+                if (i == chars.length - 1) {
+                    sb.append(chars[i]);
+                    sb.append(count);
+                }
+
+            }
+        }
+
+        for (int i = 0; i < sb.length(); i++) {
+            chars[i] = sb.charAt(i);
+        }
+
+        return sb.length();
+    }
+
+    public static void leetcode125() {
+        System.out.println(isPalindrome("A man, a plan, a canal: Panama"));
+        System.out.println(isPalindrome("race a car"));
+        System.out.println(isPalindrome(" "));
+
+    }
+
+    public static boolean isPalindrome(String s) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.length(); i++) {
+            if (
+                    (s.charAt(i) >= 48 && s.charAt(i) <= 57)
+                            || (s.charAt(i) >= 97 && s.charAt(i) <= 122)
+            ) {
+                sb.append(s.charAt(i));
+            } else if (s.charAt(i) >= 65 && s.charAt(i) <= 90) {
+                sb.append((char) (s.charAt(i) + 32));
+            }
+        }
+        String forward = sb.toString();
+
+        StringBuilder sbRevert = new StringBuilder();
+        for (int i = forward.length() - 1; i >= 0; i--) {
+            sbRevert.append(forward.charAt(i));
+        }
+        String backward = sbRevert.toString();
+
+        return forward.equals(backward);
+    }
+
+    public static void leetcode119() {
+        System.out.println(getRow(5));
+        System.out.println(getRow(3));
+        System.out.println(getRow(0));
+
+        System.out.println(getRow(1));
+    }
+
+    public static List<Integer> getRow(int rowIndex) {
+        List<Integer> firstRow = new ArrayList<>();
+        firstRow.add(1);
+        if (rowIndex == 0) {
+            return firstRow;
+        }
+
+        List<Integer> secondRow = new ArrayList<>();
+        secondRow.add(1);
+        secondRow.add(1);
+
+        if (rowIndex == 1) {
+            return secondRow;
+        }
+
+        List<Integer> previousRow = getRow(rowIndex - 1);
+        List<Integer> nextRow = new ArrayList<>();
+        nextRow.add(1);
+        for (int i = 0; i < previousRow.size() - 1; i++) {
+            nextRow.add(previousRow.get(i) + previousRow.get((i + 1)));
+        }
+        nextRow.add(1);
+
+        return nextRow;
+    }
+
     public static void leetcode118() {
         System.out.println(generate(5));
         System.out.println(generate(1));
