@@ -5,9 +5,141 @@ import edu.princeton.cs.algs4.In;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.Stack;
 
 public class LeetCodeProblem {
+    public static void leetcode1971() {
+        // [[4,3],[1,4],[4,8],[1,7],[6,4],[4,2],[7,4],[4,0],[0,9],[5,4]]
+        int[] arr1 = {4, 3};
+        int[] arr2 = {1, 4};
+        int[] arr3 = {4, 8};
+        int[] arr4 = {1, 7};
+        int[] arr5 = {6, 4};
+        int[] arr6 = {4, 2};
+        int[] arr7 = {7, 4};
+        int[] arr8 = {4, 0};
+        int[] arr9 = {0, 9};
+        int[] arr10 = {5, 4};
+
+        int[][] arr = {arr1, arr2, arr3, arr4, arr5, arr6, arr7, arr8, arr9, arr10};
+
+//        int[] arr1 = {0, 1};
+//        int[] arr2 = {1, 2};
+//        int[] arr3 = {2, 0};
+//        int[][] arr = {arr1, arr2, arr3};
+
+        System.out.println(validPath(10, arr, 5, 9));
+    }
+
+    public static boolean validPath(int n, int[][] edges, int source, int destination) {
+        if (source == destination) {
+            return true;
+        }
+
+        if (edges.length == 0) {
+            return false;
+        }
+
+
+        List<List<Integer>> graph = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        for (int[] ints : edges) {
+            graph.get(ints[0]).add(ints[1]);
+            graph.get(ints[1]).add(ints[0]);
+        }
+
+        Stack<Integer> stack = new Stack<>();
+        stack.add(source);
+
+        boolean[] visited = new boolean[n];
+
+        while (!stack.empty()) {
+            int currentVertex = stack.pop();
+            if (!visited[currentVertex]) {
+                visited[currentVertex] = true;
+                for (int i = 0; i < graph.get(currentVertex).size(); i++) {
+                    int nextVertex = graph.get(currentVertex).get(i);
+                    if (nextVertex == destination) {
+                        return true;
+                    }
+
+                    if (!visited[graph.get(currentVertex).get(i)]) {
+                        stack.add(nextVertex);
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean depthFirstSearchInGraphList(
+            List<List<Integer>> graph,
+            int start,
+            int end,
+            List<Integer> visited
+    ) {
+        if (!visited.contains(start)) {
+            visited.add(start);
+        }
+
+        visited.add(end);
+
+        for (int i = 0; i < graph.get(start).size(); i++) {
+            Integer temp = graph.get(start).get(i);
+            if (temp == end) {
+                return true;
+            }
+
+            if (!visited.contains(end)) {
+                visited.add(end);
+                if (depthFirstSearchInGraphList(graph, temp, end, visited)) {
+                    return true;
+                }
+            }
+
+        }
+
+        return false;
+    }
+
+    public static boolean validPath2(int n, int[][] edges, int source, int destination) {
+        // time limit exceeded
+        // create new List from edges to use contains method
+        List<List<Integer>> edgesList = new ArrayList<>();
+        for (int[] ints : edges) {
+            List<Integer> newInts = new ArrayList<>();
+            newInts.add(ints[0]);
+            newInts.add(ints[1]);
+            edgesList.add(newInts);
+        }
+
+        List<Integer> vertexesSource = new ArrayList<>();
+        vertexesSource.add(source);
+
+        for (int i = 0; i < edgesList.size(); i++) {
+            if (vertexesSource.contains(edgesList.get(i).get(0))
+                    || vertexesSource.contains(edgesList.get(i).get(1))) {
+                if (!vertexesSource.contains(edgesList.get(i).get(0))) {
+                    vertexesSource.add(edgesList.get(i).get(0));
+                }
+                if (!vertexesSource.contains(edgesList.get(i).get(1))) {
+                    vertexesSource.add(edgesList.get(i).get(1));
+                }
+                edgesList.remove(i);
+                i = -1;
+            }
+        }
+
+        return vertexesSource.contains(destination);
+    }
+
     public static void leetcode1414() {
         System.out.println(findMinFibonacciNumbers(1));
     }
@@ -40,7 +172,7 @@ public class LeetCodeProblem {
             for (int i = 0; i < storePreviousValue.size() - 1; i++) {
                 if (
                         storePreviousValue.get(i) <= remaining
-                        && storePreviousValue.get(i + 1) > remaining
+                                && storePreviousValue.get(i + 1) > remaining
                 ) {
                     remaining = remaining - storePreviousValue.get(i);
                     minNumbers++;
