@@ -5,7 +5,7 @@ import practice.leetcodeproblem.LeetCodeProblem;
 
 public class Main {
     public static void main(String[] args) {
-        // WeeklyContest.log();
-        LeetCodeProblem.leetcode1971();
+        WeeklyContest.log();
+        // LeetCodeProblem.leetcode207();
     }
 }

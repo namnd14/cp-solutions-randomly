@@ -6,11 +6,367 @@ import edu.princeton.cs.algs4.In;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
 public class LeetCodeProblem {
+
+    public static void leetcode207() {
+        // test case 1: numCourses = 2, prerequisites = [[1,0]]
+//        int[] arr1 = {1, 0};
+//        int[][] arr = {arr1};
+
+        // test case 2: numCourses = 2, prerequisites = [[1,0], [0, 1]
+        int[] arr1 = {1, 0};
+        int[] arr2 = {0, 1};
+        int[][] arr = {arr1, arr2};
+
+        // test case 3: n = 5, [[1,4],[2,4],[3,1],[3,2]]
+//        int[] arr1 = {1, 4};
+//        int[] arr2 = {2, 4};
+//        int[] arr3 = {3, 1};
+//        int[] arr4 = {3, 2};
+//
+//        int[][] arr = {arr1, arr2, arr3, arr4};
+        System.out.println(canFinish(2, arr));
+    }
+
+    public static boolean canFinish(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // update graph
+        for (int[] prerequisite : prerequisites) {
+            graph.get(prerequisite[1]).add(prerequisite[0]);
+        }
+
+        boolean[] visited = new boolean[numCourses];
+        boolean[] inStack = new boolean[numCourses];
+
+        for (int i = 0; i < numCourses; i++) {
+            if (!visited[i] && hasCycleFromNode(graph, i, visited, inStack)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean hasCycleFromNode(
+            List<List<Integer>> graph,
+            int start,
+            boolean[] visited,
+            boolean[] inStack
+    ) {
+        Stack<Integer> stack = new Stack<>();
+        stack.push(start);
+
+        while (!stack.isEmpty()) {
+            int node = stack.peek();
+
+            // If we haven't visited this node, mark it as visited and add to stack path
+            if (!visited[node]) {
+                visited[node] = true;
+                inStack[node] = true;
+            }
+
+            boolean hasUnvisitedNeighbor = false;
+            for (int neighbor : graph.get(node)) {
+                if (!visited[neighbor]) {
+                    stack.push(neighbor);
+                    hasUnvisitedNeighbor = true;
+                    break;
+                } else if (inStack[neighbor]) {
+                    // Found a cycle
+                    return true;
+                }
+            }
+
+            // If no unvisited neighbors, pop the node and mark it as not in the current path
+            if (!hasUnvisitedNeighbor) {
+                stack.pop();
+                inStack[node] = false;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean canFinish1(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // update graph
+        for (int[] prerequisite : prerequisites) {
+            graph.get(prerequisite[1]).add(prerequisite[0]);
+        }
+
+        boolean[] visited = new boolean[numCourses];
+        boolean[] recStack = new boolean[numCourses];
+
+        // Call the recursive helper function to
+        // detect cycle in different DFS trees
+        for (int i = 0; i < numCourses; i++) {
+            if (!visited[i] && isCyclicUtil(graph, i, visited, recStack)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isCyclicUtil(List<List<Integer>> adj, int u,
+                                        boolean[] visited, boolean[] recStack) {
+
+        if (!visited[u]) {
+
+            // Mark the current node as visited
+            // and part of recursion stack
+            visited[u] = true;
+            recStack[u] = true;
+
+            // Recur for all the vertices adjacent
+            // to this vertex
+            for (int x : adj.get(u)) {
+                if (!visited[x] &&
+                        isCyclicUtil(adj, x, visited, recStack)) {
+                    return true;
+                } else if (recStack[x]) {
+                    return true;
+                }
+            }
+        }
+
+        // Remove the vertex from recursion stack
+        recStack[u] = false;
+        return false;
+    }
+
+    public static boolean canFinish2(int numCourses, int[][] prerequisites) {
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < numCourses; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // update graph
+        for (int[] prerequisite : prerequisites) {
+            graph.get(prerequisite[1]).add(prerequisite[0]);
+        }
+
+        for (int i = 0; i < numCourses; i++) {
+            if (!isCircleCanFinish(graph, i, numCourses)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public static boolean isCircleCanFinish(List<List<Integer>> graph, int start, int n) {
+        Stack<Integer> stack = new Stack<>();
+        stack.add(start);
+
+        boolean[] visited = new boolean[n];
+        List<Integer> over = new ArrayList<>();
+        visited[start] = true;
+
+        while (!stack.isEmpty()) {
+            int current = stack.pop();
+            for (int i = 0; i < graph.get(current).size(); i++) {
+                over.add(current);
+                int next = graph.get(current).get(i);
+                if (over.contains(next)) {
+                    return false;
+                }
+                if (!visited[next]) {
+                    stack.add(next);
+                    visited[next] = true;
+                }
+
+
+            }
+        }
+
+        return true;
+    }
+
+    public static void leetcode547() {
+        // isConnected = [[1,1,0],[1,1,0],[0,0,1]]
+//        int[] arr1 = {1, 1, 0};
+//        int[] arr2 = {1, 1, 0};
+//        int[] arr3 = {0, 0, 1};
+//        int[][] arr = {arr1, arr2, arr3};
+
+        // test case 2: [[1,0,0],[0,1,0],[0,0,1]]
+        int[] arr1 = {1, 0, 0};
+        int[] arr2 = {0, 1, 0};
+        int[] arr3 = {0, 0, 1};
+        int[][] arr = {arr1, arr2, arr3};
+        System.out.println(findCircleNum(arr));
+    }
+
+    public static int findCircleNum(int[][] isConnected) {
+        // step 1: convert to List List Integer graph;
+        int graphLength = isConnected.length;
+        List<List<Integer>> graph = new ArrayList<>();
+
+        List<Integer> vertexes = new ArrayList<>();
+
+        for (int i = 0; i < graphLength; i++) {
+            graph.add(new ArrayList<>());
+            vertexes.add(i);
+        }
+
+        for (int i = 0; i < isConnected.length; i++) {
+            for (int j = 0; j < isConnected[i].length; j++) {
+                if ((i != j) && (isConnected[i][j] == 1)) {
+                    graph.get(i).add(j);
+                }
+            }
+        }
+        // done created graph
+
+        // step 2: traversal all vertexes not visited and count for each done one
+        int count = 0;
+
+        while (!vertexes.isEmpty()) {
+            boolean[] visited = bfs(graph, vertexes.get(0), graphLength);
+
+            for (int i = 0; i < visited.length; i++) {
+                if (visited[i]) {
+                    vertexes.remove((Integer) i);
+                }
+            }
+            count++;
+        }
+
+        return count;
+    }
+
+    public static boolean[] bfs(List<List<Integer>> graph, int start, int n) {
+        Queue<Integer> queue = new LinkedList<>();
+        queue.add(start);
+
+        boolean[] visited = new boolean[n];
+        visited[start] = true;
+
+        while (!queue.isEmpty()) {
+            int current = queue.poll();
+            for (int i = 0; i < graph.get(current).size(); i++) {
+                int next = graph.get(current).get(i);
+                if (!visited[next]) {
+                    queue.add(next);
+                    visited[next] = true;
+                }
+            }
+        }
+
+        return visited;
+    }
+
+    public static void leetcode3133() {
+        System.out.println(minEnd(3, 4));
+    }
+
+    public static long minEnd(int n, int x) {
+        long result = x;
+        long m = n - 1;
+        int currentIndex = 0;
+
+        while (m > 0) {
+            while ((result & (1L << currentIndex)) != 0) {
+                currentIndex++;
+            }
+            long lastBit = m & 1;
+            m = m >> 1;
+            result = result | (lastBit << currentIndex);
+            currentIndex++;
+        }
+
+        return result;
+    }
+
+    public static long minEnd2(int n, int x) {
+        StringBuilder sbX = new StringBuilder(Integer.toBinaryString(x));
+        StringBuilder sbRemaining = new StringBuilder(Integer.toBinaryString(n - 1));
+
+        int count = sbRemaining.length() - 1;
+        for (int i = sbX.length() - 1; i > 0; i--) {
+            if (sbX.charAt(i) == '0') {
+                sbX.setCharAt(i, sbRemaining.charAt(count));
+                count--;
+                if (count < 0) {
+                    return binaryToDouble(sbX.toString());
+                }
+            }
+        }
+
+        String remainStr = sbRemaining.substring(0, count + 1) + sbX;
+
+        return binaryToDouble(remainStr);
+    }
+
+    public static long binaryToDouble(String binary) {
+        char[] numbers = binary.toCharArray();
+        long result = 0;
+        for (int i = numbers.length - 1; i >= 0; i--)
+            if (numbers[i] == '1')
+                result += (long) Math.pow(2, (numbers.length - i - 1));
+        return result;
+    }
+
+    public static long binaryToDouble2(String[] binaries) {
+        long result = 0;
+        for (int i = binaries.length - 1; i >= 0; i--)
+            if (binaries[i].equals("1"))
+                result += (long) Math.pow(2, (binaries.length - i - 1));
+        return result;
+    }
+
+
+    public static void leetcode202() {
+        System.out.println(isHappy(14));
+    }
+
+    // n = 12356
+    // step = n % 10 = 6
+    // n = n / 10 = 1235
+    // step = n
+
+    public static boolean isHappy(int n) {
+        List<Integer> calculated = new ArrayList<>();
+
+        while (!calculated.contains(n)) {
+            calculated.add(n);
+            int cal = 0;
+            while (n != 0) {
+                int current = n % 10;
+                cal = cal + current * current;
+                n = n / 10;
+            }
+
+            if (cal == 1) {
+                System.out.println(calculated);
+                return true;
+            }
+
+            n = cal;
+        }
+
+        System.out.println(calculated);
+        return false;
+    }
+
     public static void leetcode1971() {
         // [[4,3],[1,4],[4,8],[1,7],[6,4],[4,2],[7,4],[4,0],[0,9],[5,4]]
         int[] arr1 = {4, 3};

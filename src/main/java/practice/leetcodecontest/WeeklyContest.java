@@ -1,5 +1,8 @@
 package practice.leetcodecontest;
 
+import edu.princeton.cs.algs4.In;
+
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,8 +14,121 @@ import java.util.Set;
 public class WeeklyContest {
     public static void log() {
         System.out.println("Hello World");
-        System.out.println(countBalancedPermutations("4567"));
-        // sample2();
+        int[] arr = {5, 11, 20, 20};
+        long abc = (long) Math.pow(9, 100_000);
+//        System.out.println(abc);
+//        System.out.println(Long.MAX_VALUE);
+        //  nums = [5,11,20,20], k = 5, numOperations = 1
+
+        System.out.println(maxFrequency(arr, 5, 1));
+//        System.out.println(smallestNumber("1234", 256));
+//        System.out.println(smallestNumber("12355", 50));
+    }
+
+    public static int maxFrequency(int[] nums, int k, int numOperations) {
+        Arrays.sort(nums);  // Sort the array for the sliding window approach
+        int maxFrequency = 1;  // At least one element can have frequency of 1
+        long operationsUsed = 0;
+        int i = 0;
+
+        for (int j = 1; j < nums.length; j++) {
+            // Calculate the cost to make nums[i] through nums[j-1] equal to nums[j]
+            operationsUsed += (long) (nums[j] - nums[j - 1]) * (j - i);
+
+            // If operations used exceed numOperations, adjust the window by moving 'i'
+            while (operationsUsed > numOperations) {
+                operationsUsed -= nums[j] - nums[i];
+                i++;
+            }
+
+            // Update max frequency as the current window size
+            maxFrequency = Math.max(maxFrequency, j - i + 1);
+        }
+
+        return maxFrequency;
+    }
+
+    public static String smallestNumber(String num, long t) {
+        if (!checkNum(t)) {
+            return "-1";
+        }
+
+        BigInteger bigT = new BigInteger(String.valueOf(t));
+        BigInteger zero = new BigInteger("0");
+        BigInteger max = new BigInteger(String.valueOf(Integer.MAX_VALUE));
+
+        while (true) {
+            if (new BigInteger(num).compareTo(max) > 0) {
+                return "-1";
+            }
+
+            BigInteger total = new BigInteger("1");
+            String[] arr = num.split("");
+            for (String s : arr) {
+                total = total.multiply(new BigInteger(s));
+            }
+
+            if (total.remainder(bigT).equals(zero)) {
+                String zeroFree = num.replaceAll("0", "");
+                if (num.equals(zeroFree)) {
+                    return num;
+                }
+            }
+
+            num = String.valueOf(Integer.parseInt(num) + 1);
+        }
+    }
+
+    private static boolean checkNum(long t) {
+        while (true) {
+            boolean isDecrease = false;
+            if (t % 2 == 0) {
+                isDecrease = true;
+                t = t / 2;
+            }
+
+            if (t % 3 == 0) {
+                isDecrease = true;
+                t = t / 3;
+            }
+
+            if (t % 5 == 0) {
+                isDecrease = true;
+                t = t / 5;
+            }
+
+            if (t % 7 == 0) {
+                isDecrease = true;
+                t = t / 7;
+            }
+
+            if (!isDecrease) {
+                break;
+            }
+        }
+
+        if (t >= 1 && t <= 9) {
+            return true;
+        }
+
+        BigInteger bigInt = new BigInteger(String.valueOf(t));
+        return !bigInt.isProbablePrime(100);
+    }
+
+    public static int smallestNumber(int n, int t) {
+        while (true) {
+            int total = 1;
+            String[] arr = String.valueOf(n).split("");
+            for (String s : arr) {
+                total = total * Integer.parseInt(s);
+            }
+
+            if (total % t == 0) {
+                return n;
+            }
+
+            n++;
+        }
     }
 
     public static int countBalancedPermutations(String num) {
