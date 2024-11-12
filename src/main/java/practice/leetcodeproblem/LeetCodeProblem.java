@@ -13,6 +13,71 @@ import java.util.Set;
 import java.util.Stack;
 
 public class LeetCodeProblem {
+    public static void leetcode2601() {
+        int[] arr1 = {4, 9, 6, 10};
+        System.out.println(primeSubOperation(arr1));
+//        int[] arr2 = {6, 8, 11, 12};
+//        System.out.println(primeSubOperation(arr2));
+//        int[] arr3 = {5, 8, 3};
+//        System.out.println(primeSubOperation(arr3));
+//        int[] arr4 = {5};
+//        System.out.println(primeSubOperation(arr4));
+//        int[] arr5 = {5, 3};
+//        System.out.println(primeSubOperation(arr5));
+    }
+
+    public static boolean primeSubOperation(int[] nums) {
+        if (nums.length == 1) {
+            return true;
+        }
+
+        List<Integer> allEligiblePrimes = new ArrayList<>();
+        for (int i = 2; i < 1010; i++) {
+            if (isPrime(i)) {
+                allEligiblePrimes.add(i);
+            }
+        }
+
+        int currentMax = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < allEligiblePrimes.size() - 1; j++) {
+                if (
+                        nums[i] - allEligiblePrimes.get(j) > currentMax
+                                && nums[i] - allEligiblePrimes.get(j + 1) <= currentMax
+                ) {
+                    nums[i] = nums[i] - allEligiblePrimes.get(j);
+                }
+            }
+            currentMax = nums[i];
+        }
+
+        // check nums is strictly increase or not
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] <= nums[i - 1]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private static boolean isPrime(int n) {
+        if (n == 1) {
+            return false;
+        }
+
+        if (n == 2) {
+            return true;
+        }
+
+        for (int i = 2; i <= n / 2; i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     public static void leetcode207() {
         // test case 1: numCourses = 2, prerequisites = [[1,0]]
