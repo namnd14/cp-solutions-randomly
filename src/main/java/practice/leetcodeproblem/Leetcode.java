@@ -12,49 +12,167 @@ import java.util.Stack;
 public class Leetcode {
     public static void log() {
         System.out.println("Leetcode");
-//        int[] nums1 = {2, 0, 2};
-//        int[] query11 = {0, 2, 1};
-//        int[] query12 = {0, 2, 1};
-//        int[] query13 = {1, 1, 3};
-//        int[][] queries1 = {query11, query12, query13};
-//        System.out.println(minZeroArray(nums1, queries1));
-//
-//        int[] nums2 = {4, 3, 2, 1};
-//        int[] query21 = {1, 3, 2};
-//        int[] query22 = {0, 2, 1};
-//        int[][] queries2 = {query21, query22};
-//        System.out.println(minZeroArray(nums2, queries2));
-//
-//        int[] nums3 = {3, 6, 5};
-//        int[] query31 = {0, 2, 1};
-//        int[] query32 = {0, 2, 2};
-//        int[] query33 = {1, 2, 3};
-//        int[][] queries3 = {query31, query32, query33};
-//        System.out.println(minZeroArray(nums3, queries3));
-//
-//        int[] nums4 = {0};
-//        int[] query41 = {0, 0, 2};
-//        int[] query42 = {0, 0, 4};
-//        int[] query43 = {0, 0, 4};
-//        int[][] queries4 = {query41, query42, query43};
-//        System.out.println(minZeroArray(nums4, queries4));
+        // Input: m = 4, n = 6, guards = [[0,0],[1,1],[2,3]], walls = [[0,1],[2,2],[1,4]]
+        int[] guard1 = {0, 0};
+        int[] guard2 = {1, 1};
+        int[] guard3 = {2, 3};
+        int[][] guards = {guard1, guard2, guard3};
+        int[] wall1 = {0, 1};
+        int[] wall2 = {2, 2};
+        int[] wall3 = {1, 4};
+        int[][] walls = {wall1, wall2, wall3};
+        System.out.println(countUnguarded(4, 6, guards, walls));
+    }
 
-        //[7,6,8]
-        //queries =
-        //[[0,0,2],[0,1,5],[2,2,5],[0,2,4]]
-//        int[] nums1 = {-2, 3, 2, -5, 6, 8, 3};
-//        System.out.println(shortestSubarray(nums1, 8));
-        int[] nums2 = {-34, 37, 51, 3, -12, -50, 51, 100, -47, 99, 34, 14, -13, 89, 31, -14, -44, 23, -38, 6};
-        System.out.println(shortestSubarray(nums2, 151));
-//        int[] nums3 = {2, -1, 2};
-//        System.out.println(shortestSubarray(nums3, 3));
+    public static int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
+        // 0 represent for not guarded cell
+        // 1 represent for guarded cell
+        // 2 represent for a wall
+        // 3 represent for a guard
+        int[][] grid = new int[m][n];
 
-//        int[] temperatures1 = {73, 74, 75, 71, 69, 72, 76, 73};
-//        System.out.println(Arrays.toString(dailyTemperatures(temperatures1)));
-//        int[] temperatures2 = {30, 40, 50, 60};
-//        System.out.println(Arrays.toString(dailyTemperatures(temperatures2)));
-//        int[] temperatures3 = {30};
-//        System.out.println(Arrays.toString(dailyTemperatures(temperatures3)));
+        // add walls into grid
+        for (int[] wall : walls) {
+            grid[wall[0]][wall[1]] = 2;
+        }
+
+        // add guard into grid
+        for (int[] guard : guards) {
+            grid[guard[0]][guard[1]] = 3;
+        }
+
+        // loop guard to add guarded cell
+        for (int[] guard : guards) {
+            // North
+            int north = guard[0] - 1;
+            while (north >= 0) {
+                if (grid[north][guard[1]] >= 2) {
+                    break;
+                }
+
+                grid[north][guard[1]] = 1;
+                north--;
+            }
+
+            // South
+            int south = guard[0] + 1;
+            while (south < m) {
+                if (grid[south][guard[1]] >= 2) {
+                    break;
+                }
+
+                grid[south][guard[1]] = 1;
+                south++;
+            }
+
+            // West
+            int west = guard[1] - 1;
+            while (west >= 0) {
+                if (grid[guard[0]][west] >= 2) {
+                    break;
+                }
+
+                grid[guard[0]][west] = 1;
+                west--;
+            }
+
+            // East
+            int east = guard[1] + 1;
+            while (east < n) {
+                if (grid[guard[0]][east] >= 2) {
+                    break;
+                }
+
+                grid[guard[0]][east] = 1;
+                east++;
+            }
+        }
+
+        int count = 0;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (grid[i][j] == 0) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public static boolean isPowerOfThree(int n) {
+        if (n < 1) {
+            return false;
+        }
+
+        if (n == 1) {
+            return true;
+        }
+
+        while (n % 3 == 0) {
+            n = n / 3;
+        }
+
+        return n == 1;
+    }
+
+    public static boolean isUgly(int n) {
+        if (n == 1) {
+            return true;
+        }
+
+        while (true) {
+            boolean isDecrease = false;
+            if (n % 2 == 0) {
+                n = n / 2;
+                isDecrease = true;
+            }
+
+            if (n % 3 == 0) {
+                n = n / 3;
+                isDecrease = true;
+            }
+
+            if (n % 5 == 0) {
+                n = n / 5;
+                isDecrease = true;
+            }
+
+            if (!isDecrease) {
+                break;
+            }
+        }
+
+        return n == 1;
+    }
+
+    public static boolean isPowerOfTwo(int n) {
+        double[] nums = new double[63];
+
+        for (int i = -31, j = 0; i < 32; i++) {
+            nums[j] = Math.pow(2, i);
+            j++;
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] == (double) n) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static int addDigits(int num) {
+        while (num >= 10) {
+            String[] arr = String.valueOf(num).split("");
+            num = 0;
+            for (String s : arr) {
+                num = num + Integer.parseInt(s);
+            }
+        }
+
+        return num;
     }
 
     public static int shortestSubarray(int[] nums, int k) {
