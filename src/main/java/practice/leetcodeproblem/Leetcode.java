@@ -3,25 +3,70 @@ package practice.leetcodeproblem;
 import edu.princeton.cs.algs4.In;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Stack;
 
 public class Leetcode {
     public static void log() {
         System.out.println("Leetcode");
-        // Input: m = 4, n = 6, guards = [[0,0],[1,1],[2,3]], walls = [[0,1],[2,2],[1,4]]
-        int[] guard1 = {0, 0};
-        int[] guard2 = {1, 1};
-        int[] guard3 = {2, 3};
-        int[][] guards = {guard1, guard2, guard3};
-        int[] wall1 = {0, 1};
-        int[] wall2 = {2, 2};
-        int[] wall3 = {1, 4};
-        int[][] walls = {wall1, wall2, wall3};
-        System.out.println(countUnguarded(4, 6, guards, walls));
+        // Input: n = 3, edges = [[0,1],[1,2]]
+//        int[] edge1 = {0, 1};
+//        int[] edge2 = {1, 2};
+//        int[][] edges = {edge1, edge2};
+//        System.out.println(findChampion(3, edges));
+        // n = 4, edges = [[0,2],[1,3],[1,2]]
+        int[] edge1 = {0, 2};
+        int[] edge2 = {1, 2};
+        int[] edge3 = {1, 3};
+        int[][] edges = {edge1, edge2, edge3};
+        System.out.println(findChampion(4, edges));
+    }
+
+    public static int findChampion(int n, int[][] edges) {
+        boolean[] weakTeams = new boolean[n];
+
+        for (int[] edge : edges) {
+            weakTeams[edge[1]] = true;
+        }
+        int count = 0;
+        int ans = 0;
+
+        for (int i = 0; i < weakTeams.length; i++) {
+            if (!weakTeams[i]) {
+                count++;
+                ans = i;
+            }
+        }
+
+        return count == 1 ? ans : -1;
+    }
+
+    public static int maxEqualRowsAfterFlips(int[][] matrix) {
+        Map<String, Integer> patternFrequency = new HashMap<>();
+
+        for (int[] row : matrix) {
+            StringBuilder pattern = new StringBuilder();
+            if (row[0] == 0) {
+                for (int bit : row) {
+                    pattern.append(bit);
+                }
+            } else {
+                for (int bit : row) {
+                    pattern.append(bit ^ 1);
+                }
+            }
+            patternFrequency.merge(pattern.toString(), 1, Integer::sum);
+        }
+
+        return Collections.max(patternFrequency.values());
     }
 
     public static int countUnguarded(int m, int n, int[][] guards, int[][] walls) {
