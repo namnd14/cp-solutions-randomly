@@ -9,6 +9,7 @@ public class Main {
     public static void main(String[] args) {
 //        WeeklyContest.log();
         // LeetCodeProblem.leetcode2601();
-        Leetcode.log();
+        Leetcode leetcode = new Leetcode();
+        leetcode.log();
     }
 }

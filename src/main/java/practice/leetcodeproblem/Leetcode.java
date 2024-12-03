@@ -15,19 +15,23 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class Leetcode {
-    public static void log() {
-        System.out.println("Leetcode");
-        // Input: n = 3, edges = [[0,1],[1,2]]
-//        int[] edge1 = {0, 1};
-//        int[] edge2 = {1, 2};
-//        int[][] edges = {edge1, edge2};
-//        System.out.println(findChampion(3, edges));
-        // n = 4, edges = [[0,2],[1,3],[1,2]]
-        int[] edge1 = {0, 2};
-        int[] edge2 = {1, 2};
-        int[] edge3 = {1, 3};
-        int[][] edges = {edge1, edge2, edge3};
-        System.out.println(findChampion(4, edges));
+    public void log() {
+        int[] arr1 = {10, 2, 5, 3};
+        System.out.println(checkIfExist(arr1));
+        int[] arr2 = {3, 1, 7, 0};
+        System.out.println(checkIfExist(arr2));
+    }
+
+    public boolean checkIfExist(int[] arr) {
+        List<Integer> list = new ArrayList<>();
+        for (int i : arr) {
+            if (i == 0 || list.contains(i * 2) || (i % 2 == 0 && list.contains(i / 2))) {
+                return true;
+            }
+            list.add(i);
+        }
+
+        return false;
     }
 
     public static int findChampion(int n, int[][] edges) {
