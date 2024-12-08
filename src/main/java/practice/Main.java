@@ -4,6 +4,7 @@ import practice.leetcodecontest.WeeklyContest;
 import practice.leetcodeproblem.LeetCodeProblem;
 import practice.leetcodeproblem.Leetcode;
 import practice.leetcodeproblem.SlidingWindow;
+import practice.technique.BinarySearch;
 import practice.technique.DynamicProgramming;
 
 public class Main {
@@ -13,6 +14,8 @@ public class Main {
         Leetcode leetcode = new Leetcode();
         // leetcode.log();
         DynamicProgramming dp = new DynamicProgramming();
-        dp.log();
+        // dp.log();
+        BinarySearch bs = new BinarySearch();
+        bs.log();
     }
 }
