@@ -4,6 +4,7 @@ import practice.leetcodecontest.WeeklyContest;
 import practice.leetcodeproblem.LeetCodeProblem;
 import practice.leetcodeproblem.Leetcode;
 import practice.leetcodeproblem.SlidingWindow;
+import practice.leetcodeproblem.TreeProblem;
 import practice.technique.BinarySearch;
 import practice.technique.DynamicProgramming;
 
@@ -16,6 +17,8 @@ public class Main {
         DynamicProgramming dp = new DynamicProgramming();
         // dp.log();
         BinarySearch bs = new BinarySearch();
-        bs.log();
+        // bs.log();
+        TreeProblem tp = new TreeProblem();
+        tp.log();
     }
 }
