@@ -24,11 +24,11 @@ public class Main {
         TreeProblem tp = new TreeProblem();
         // tp.log();
         DailyChallenge dailyChallenge = new DailyChallenge();
-        // dailyChallenge.log();
+        dailyChallenge.log();
         // ShortestPathDijkstraAdjacencyMatrix
         ShortestPathDijkstraAdjacencyMatrix s = new ShortestPathDijkstraAdjacencyMatrix();
         // s.log();
         ShortestPathDijkstraAdjacencyList t = new ShortestPathDijkstraAdjacencyList();
-        t.log();
+        // t.log();
     }
 }
