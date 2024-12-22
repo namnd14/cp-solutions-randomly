@@ -1,17 +1,46 @@
 package practice.leetcodeproblem;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 
 public class DailyChallenge {
     public void log() {
         System.out.println("daily challenge");
-        System.out.println(repeatLimitedString("cczazcc", 3));
-        System.out.println(repeatLimitedString("aababab", 2));
+        System.out.println(countSubarrays(new int[]{1, 4, 1}));
+        System.out.println(countSubarrays(new int[]{1, 2, 1, 4, 1}));
 
+        System.out.println(countSubarrays(new int[]{1, 1, 1}));
+
+    }
+
+    public int countSubarrays(int[] nums) {
+        int count = 0;
+
+        for (int i = 2; i < nums.length; i++) {
+            if ((nums[i] + nums[i - 2]) * 2 == nums[i - 1]) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    public int maxChunksToSorted(int[] arr) {
+        int max = -1;
+        int count = 0;
+        for (int i = 0; i < arr.length; i++) {
+            max = Math.max(max, arr[i]);
+            if (max == i) {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     public String repeatLimitedString2(String s, int repeatLimit) {
