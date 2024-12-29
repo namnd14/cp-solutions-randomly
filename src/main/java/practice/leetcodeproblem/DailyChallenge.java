@@ -11,11 +11,36 @@ import java.util.PriorityQueue;
 public class DailyChallenge {
     public void log() {
         System.out.println("daily challenge");
-        System.out.println(countSubarrays(new int[]{1, 4, 1}));
-        System.out.println(countSubarrays(new int[]{1, 2, 1, 4, 1}));
+        System.out.println(maxScoreSightseeingPair(new int[]{8, 1, 5, 2, 6}));
 
-        System.out.println(countSubarrays(new int[]{1, 1, 1}));
 
+    }
+
+    public int maxScoreSightseeingPair(int[] values) {
+        int maxLeftScore = values[0];
+        int maxScore = 0;
+        for (int i = 1; i < values.length; i++) {
+            maxScore = Math.max(maxScore, maxLeftScore + values[i] - i);
+            maxLeftScore = Math.max(maxLeftScore, values[i] + i);
+        }
+
+        return maxScore;
+    }
+
+    public int maxScoreSightseeingPair2(int[] values) {
+        int n = values.length;
+        int[] maxLeftScore = new int[n];
+        maxLeftScore[0] = values[0];
+        int maxScore = 0;
+        for (int i = 1; i < n; i++) {
+            int currentRightScore = values[i] - i;
+            maxScore = Math.max(maxScore, maxLeftScore[i - 1] + currentRightScore);
+
+            int currentLeftScore = values[i] + i;
+            maxLeftScore[i] = Math.max(maxLeftScore[i - 1], currentLeftScore);
+        }
+
+        return maxScore;
     }
 
     public int countSubarrays(int[] nums) {

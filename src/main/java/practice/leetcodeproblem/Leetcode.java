@@ -16,10 +16,29 @@ import java.util.Stack;
 
 public class Leetcode {
     public void log() {
-        int[] arr1 = {10, 2, 5, 3};
-        System.out.println(checkIfExist(arr1));
-        int[] arr2 = {3, 1, 7, 0};
-        System.out.println(checkIfExist(arr2));
+        System.out.println(minSubArrayLen(7, new int[]{1}));
+    }
+
+    public int minSubArrayLen(int target, int[] nums) {
+        int min = Integer.MAX_VALUE;
+        int left = 0;
+        int right = 0;
+        int currentSum = nums[0];
+
+        while (right < nums.length) {
+            if (currentSum < target) {
+                right++;
+                if (right < nums.length) {
+                    currentSum = currentSum + nums[right];
+                }
+            } else {
+                min = Math.min(min, right - left + 1);
+                currentSum = currentSum - nums[left];
+                left++;
+            }
+        }
+
+        return min == Integer.MAX_VALUE ? 0 : min;
     }
 
     public boolean checkIfExist(int[] arr) {
