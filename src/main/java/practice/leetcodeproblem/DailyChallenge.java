@@ -12,9 +12,57 @@ import java.util.PriorityQueue;
 public class DailyChallenge {
     public void log() {
         System.out.println("daily challenge");
-        System.out.println(mincostTickets2(new int[]{1, 4, 6, 7, 8, 20}, new int[]{2, 7, 15}));
+        System.out.println(maxScore("011101"));
 
 
+    }
+
+    public int maxScore(String s) {
+        int countOnes = 0;
+        int maxScore = 0;
+        int countOnesLeft = 0;
+        int countZerosLeft = 0;
+
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == '1') {
+                countOnes++;
+            }
+        }
+
+        for (int i = 0; i < s.length() - 1; i++) {
+            if (s.charAt(i) == '0') {
+                countZerosLeft++;
+            } else {
+                countOnesLeft++;
+            }
+
+            int currentScore = countZerosLeft + countOnes - countOnesLeft;
+            maxScore = Math.max(maxScore, currentScore);
+        }
+
+        return maxScore;
+    }
+
+    public int maxScore2(String s) {
+        int maxScore = 0;
+        int countLeft = 0;
+
+        for (int i = 0; i < s.length() - 1; i++) {
+            if (s.charAt(i) == '0') {
+                countLeft++;
+            }
+            int countRight = 0;
+
+            for (int j = i + 1; j < s.length(); j++) {
+                if (s.charAt(j) == '1') {
+                    countRight++;
+                }
+            }
+
+            maxScore = Math.max(maxScore, countLeft + countRight);
+        }
+
+        return maxScore;
     }
 
     public int mincostTickets2(int[] days, int[] costs) {
