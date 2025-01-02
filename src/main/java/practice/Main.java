@@ -13,6 +13,7 @@ import practice.technique.ShortestPathDijkstraAdjacencyMatrix;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("Log from main class");
 //        WeeklyContest.log();
         // LeetCodeProblem.leetcode2601();
         Leetcode leetcode = new Leetcode();
