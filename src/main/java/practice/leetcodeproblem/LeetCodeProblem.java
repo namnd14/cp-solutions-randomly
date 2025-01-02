@@ -1,7 +1,6 @@
 package practice.leetcodeproblem;
 
 import com.sun.source.tree.Tree;
-import edu.princeton.cs.algs4.In;
 
 import java.util.ArrayList;
 import java.util.Arrays;
