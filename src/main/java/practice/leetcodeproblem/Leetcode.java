@@ -14,7 +14,33 @@ import java.util.Stack;
 
 public class Leetcode {
     public void log() {
-        System.out.println(minSubArrayLen(7, new int[]{1}));
+        System.out.println(countGoodStrings(2, 3, 1, 2));
+        System.out.println(countGoodStrings(3, 3, 1, 1));
+
+    }
+
+    public int countGoodStrings(int low, int high, int zero, int one) {
+        int modulo = 1_000_000_007;
+        int[] dp = new int[high + 1];
+        dp[0] = 1;
+
+        for (int i = 1; i <= high; i++) {
+            if (i >= zero) {
+                dp[i] += dp[i - zero];
+            }
+            if (i >= one) {
+                dp[i] += dp[i - one];
+            }
+            dp[i] %= modulo;
+        }
+
+        int sum = 0;
+        for (int i = low; i <= high; i++) {
+            sum += dp[i];
+            sum %= modulo;
+        }
+
+        return sum;
     }
 
     public int minSubArrayLen(int target, int[] nums) {

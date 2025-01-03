@@ -17,7 +17,7 @@ public class Main {
 //        WeeklyContest.log();
         // LeetCodeProblem.leetcode2601();
         Leetcode leetcode = new Leetcode();
-        // leetcode.log();
+        leetcode.log();
         DynamicProgramming dp = new DynamicProgramming();
         // dp.log();
         BinarySearch bs = new BinarySearch();
@@ -25,7 +25,6 @@ public class Main {
         TreeProblem tp = new TreeProblem();
         // tp.log();
         DailyChallenge dailyChallenge = new DailyChallenge();
-        dailyChallenge.log();
         // ShortestPathDijkstraAdjacencyMatrix
         ShortestPathDijkstraAdjacencyMatrix s = new ShortestPathDijkstraAdjacencyMatrix();
         // s.log();
