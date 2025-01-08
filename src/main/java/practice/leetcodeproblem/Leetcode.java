@@ -14,9 +14,57 @@ import java.util.Stack;
 
 public class Leetcode {
     public void log() {
-        System.out.println(countGoodStrings(2, 3, 1, 2));
-        System.out.println(countGoodStrings(3, 3, 1, 1));
+        System.out.println(countPrefixSuffixPairs(new String[]{"a", "abb"}));
 
+    }
+
+    public int countPrefixSuffixPairs(String[] words) {
+        int count = 0;
+        for (int i = 0; i < words.length - 1; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+                if (isPrefixAndSuffix(words[i], words[j])) {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    private boolean isPrefixAndSuffix(String str1, String str2) {
+        if (str2.length() < str1.length()) {
+            return false;
+        }
+
+        for (int i = 0; i < str1.length(); i++) {
+            if (str1.charAt(i) != str2.charAt(i)) {
+                return false;
+            }
+        }
+
+        int indexOfStr2 = str2.length() - 1;
+        for (int i = str1.length() - 1; i >= 0; i--) {
+            if (str1.charAt(i) != str2.charAt(indexOfStr2)) {
+                return false;
+            }
+            indexOfStr2--;
+        }
+
+        return true;
+    }
+
+    public List<String> stringMatching(String[] words) {
+        Arrays.sort(words, (a, b) -> b.length() - a.length());
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < words.length; i++) {
+            for (int j = i + 1; j < words.length; j++) {
+                if (!result.contains(words[j]) && words[i].contains(words[j])) {
+                    result.add(words[j]);
+                }
+            }
+        }
+
+        return result;
     }
 
     public int countGoodStrings(int low, int high, int zero, int one) {
