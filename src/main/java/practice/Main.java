@@ -1,5 +1,6 @@
 package practice;
 
+import practice.algorithm.QuickSort;
 import practice.leetcodecontest.WeeklyContest;
 import practice.leetcodeproblem.DailyChallenge;
 import practice.leetcodeproblem.LeetCodeProblem;
@@ -17,18 +18,8 @@ public class Main {
 //        WeeklyContest.log();
         // LeetCodeProblem.leetcode2601();
         Leetcode leetcode = new Leetcode();
-        leetcode.log();
-        DynamicProgramming dp = new DynamicProgramming();
-        // dp.log();
-        BinarySearch bs = new BinarySearch();
-        // bs.log();
-        TreeProblem tp = new TreeProblem();
-        // tp.log();
-        DailyChallenge dailyChallenge = new DailyChallenge();
-        // ShortestPathDijkstraAdjacencyMatrix
-        ShortestPathDijkstraAdjacencyMatrix s = new ShortestPathDijkstraAdjacencyMatrix();
-        // s.log();
-        ShortestPathDijkstraAdjacencyList t = new ShortestPathDijkstraAdjacencyList();
-        // t.log();
+        // leetcode.log();
+        QuickSort qs = new QuickSort();
+        qs.log();
     }
 }
