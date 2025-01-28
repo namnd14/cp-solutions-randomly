@@ -14,8 +14,49 @@ import java.util.Stack;
 
 public class Leetcode {
     public void log() {
-        System.out.println(countPrefixSuffixPairs(new String[]{"a", "abb"}));
+        System.out.println(findTheDifference2("", "a"));
+        System.out.println(findTheDifference2("abde", "edcba"));
+        
 
+    }
+    
+    public char findTheDifference2(String s, String t) {
+        // an array to store number of appearance of each character
+        int[] appearance = new int[300];
+        for (int i = 0; i < t.length(); i++) {
+            appearance[t.charAt(i)]++;
+        }
+
+        for (int i = 0; i < s.length(); i++) {
+            appearance[s.charAt(i)]--;
+        }
+
+        for (int i = 97; i < 122; i++) {
+            if (appearance[i] > 0) {
+                return (char) i;
+            }
+        }
+
+        return 'z';
+    }
+
+    public char findTheDifference(String s, String t) {
+        if (s.isEmpty()) {
+            return t.charAt(0);
+        }
+        
+        char[] arr1 = s.toCharArray();
+        char[] arr2 = t.toCharArray();
+        Arrays.sort(arr1);
+        Arrays.sort(arr2);
+
+        for (int i = 0; i < arr1.length; i++) {
+            if (arr1[i] != arr2[i]) {
+                return arr2[i];
+            }
+        }
+        
+        return arr2[arr2.length - 1];
     }
 
     public int countPrefixSuffixPairs(String[] words) {
