@@ -18,8 +18,8 @@ public class Main {
 //        WeeklyContest.log();
         // LeetCodeProblem.leetcode2601();
         Leetcode leetcode = new Leetcode();
-        // leetcode.log();
+        leetcode.log();
         QuickSort qs = new QuickSort();
-        qs.log();
+        // qs.log();
     }
 }

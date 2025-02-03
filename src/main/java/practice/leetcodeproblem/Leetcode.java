@@ -14,12 +14,69 @@ import java.util.Stack;
 
 public class Leetcode {
     public void log() {
-        System.out.println(findTheDifference2("", "a"));
-        System.out.println(findTheDifference2("abde", "edcba"));
-        
+        System.out.println(longestMonotonicSubarray(new int[]{1, 4, 3, 3, 2}));
 
     }
-    
+
+    public int longestMonotonicSubarray(int[] nums) {
+        int max = 1;
+        int count = 1;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] != nums[i - 1]) {
+                count++;
+            }
+
+            if (i >= 2 && nums[i] > nums[i - 1] && nums[i - 1] <= nums[i - 2]) {
+                count = 2;
+            }
+
+            if (i >= 2 && nums[i] < nums[i - 1] && nums[i - 1] >= nums[i - 2]) {
+                count = 2;
+            }
+
+            max = Math.max(max, count);
+        }
+
+        return max;
+    }
+
+    public boolean check(int[] nums) {
+        boolean isRotated = false;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] < nums[i - 1] && !isRotated) {
+                isRotated = true;
+            } else if (nums[i] < nums[i - 1] && isRotated) {
+                return false;
+            }
+        }
+
+        if (isRotated && nums[nums.length - 1] > nums[0]) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public int minimumOperations(int[][] grid) {
+        int rowLength = grid.length;
+        int columnLength = grid[0].length;
+
+        int totalNeededOperations = 0;
+        for (int i = 0; i < columnLength; i++) {
+            // first item in each column always need 0 operations
+            for (int j = 1; j < rowLength; j++) {
+                if (grid[j][i] < grid[j - 1][i] + 1) {
+                    int neededOperations = grid[j - 1][i] + 1 - grid[j][i];
+                    grid[j][i] = grid[j - 1][i] + 1;
+                    totalNeededOperations += neededOperations;
+                }
+            }
+        }
+
+        return totalNeededOperations;
+    }
+
     public char findTheDifference2(String s, String t) {
         // an array to store number of appearance of each character
         int[] appearance = new int[300];
@@ -44,7 +101,7 @@ public class Leetcode {
         if (s.isEmpty()) {
             return t.charAt(0);
         }
-        
+
         char[] arr1 = s.toCharArray();
         char[] arr2 = t.toCharArray();
         Arrays.sort(arr1);
@@ -55,7 +112,7 @@ public class Leetcode {
                 return arr2[i];
             }
         }
-        
+
         return arr2[arr2.length - 1];
     }
 
