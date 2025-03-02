@@ -1,21 +1,96 @@
 package practice.leetcodeproblem;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Deque;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Stack;
+import java.util.*;
 
 public class Leetcode {
     public void log() {
-        System.out.println(maxAscendingSum(new int[]{10, 20, 30, 5, 10, 50}));
+        System.out.println(Arrays.toString(applyOperations(new int[]{0, 1})));
 
+    }
+
+    public int[][] mergeArrays(int[][] nums1, int[][] nums2) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int[] ints : nums1) {
+            map.put(ints[0], ints[1]);
+        }
+
+        for (int[] ints : nums2) {
+            if (map.containsKey(ints[0])) {
+                map.put(ints[0], ints[1] + map.get(ints[0]));
+            } else {
+                map.put(ints[0], ints[1]);
+            }
+        }
+
+        int[][] result = new int[map.size()][2];
+        int index = 0;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            result[index][0] = entry.getKey();
+            result[index][1] = entry.getValue();
+            index++;
+        }
+
+        Arrays.sort(result, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                return o1[0] - o2[0];
+            }
+        });
+
+        return result;
+    }
+
+    public int[] applyOperations(int[] nums) {
+        for (int i = 0; i < nums.length - 1; i++) {
+            if (nums[i] == nums[i + 1]) {
+                nums[i] *= 2;
+                nums[i + 1] = 0;
+            }
+        }
+
+        int index = 0;
+        int[] result = new int[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            if (nums[i] > 0) {
+                result[index] = nums[i];
+                index++;
+            }
+        }
+
+        return result;
+    }
+
+    public long countBadPairs(int[] nums) {
+        if (nums.length == 1) {
+            return 0;
+        }
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int current = nums[i] - i;
+            if (!map.containsKey(current)) {
+                map.put(current, 1);
+            } else {
+                map.put(current, map.get(current) + 1);
+            }
+        }
+
+        long maxPairs = subFuncCount(nums.length - 1);
+        long goodPairs = 0;
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            goodPairs += subFuncCount(entry.getValue() - 1);
+        }
+
+        return maxPairs - goodPairs;
+    }
+
+    private long subFuncCount(int n) {
+        long result = 0;
+        for (int i = 1; i <= n; i++) {
+            result += i;
+        }
+
+        return result;
     }
 
     public int maxAscendingSum(int[] nums) {
