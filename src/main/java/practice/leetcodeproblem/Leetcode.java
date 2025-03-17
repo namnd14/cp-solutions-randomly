@@ -8,6 +8,32 @@ public class Leetcode {
 
     }
 
+    public boolean divideArray2(int[] nums) {
+        int[] result = new int[501];
+        for (int n : nums) {
+            result[n]++;
+        }
+
+        for (int n : result) {
+            if ((n & 1) == 1) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean divideArray(int[] nums) {
+        Arrays.sort(nums);
+        for (int i = 0; i < nums.length - 1; i = i + 2) {
+            if (nums[i] != nums[i + 1]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public int[][] mergeArrays(int[][] nums1, int[][] nums2) {
         Map<Integer, Integer> map = new HashMap<>();
         for (int[] ints : nums1) {
