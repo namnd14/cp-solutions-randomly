@@ -8,6 +8,18 @@ public class Leetcode {
 
     }
 
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            if (set.contains(num)) {
+                return true;
+            }
+            set.add(num);
+        }
+
+        return false;
+    }
+
     public boolean divideArray2(int[] nums) {
         int[] result = new int[501];
         for (int n : nums) {
