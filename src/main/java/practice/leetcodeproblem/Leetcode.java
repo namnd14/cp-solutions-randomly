@@ -4,8 +4,48 @@ import java.util.*;
 
 public class Leetcode {
     public void log() {
-        System.out.println(Arrays.toString(applyOperations(new int[]{0, 1})));
+        System.out.println(minimumOperations2(new int[]{4, 5, 6, 4, 4}));
 
+    }
+
+    public int minimumOperations2(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (set.contains(nums[i])) {
+                int result = (int) Math.ceil((i + 1) / 3.0);
+                return result;
+            }
+            set.add(nums[i]);
+        }
+
+        return 0;
+    }
+
+    int count = 0;
+
+    public int minimumOperations(int[] nums) {
+        if (checkArrayIsDistinct(nums)) {
+            return count;
+        }
+
+        count++;
+        if (nums.length <= 3) {
+            return count;
+        }
+
+        return minimumOperations(Arrays.copyOfRange(nums, 3, nums.length));
+    }
+
+    private boolean checkArrayIsDistinct(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int num : nums) {
+            if (set.contains(num)) {
+                return false;
+            }
+            set.add(num);
+        }
+
+        return true;
     }
 
     public boolean containsDuplicate(int[] nums) {
