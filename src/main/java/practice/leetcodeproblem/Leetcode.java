@@ -5,7 +5,7 @@ import java.util.*;
 public class Leetcode {
     public void log() {
         System.out.println(minimumOperations2(new int[]{4, 5, 6, 4, 4}));
-
+        // update
     }
 
     public int minimumOperations2(int[] nums) {
