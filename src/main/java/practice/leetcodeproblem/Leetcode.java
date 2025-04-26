@@ -4,8 +4,56 @@ import java.util.*;
 
 public class Leetcode {
     public void log() {
-        System.out.println(minimumOperations2(new int[]{4, 5, 6, 4, 4}));
+        System.out.println(summaryRanges(new int[]{0, 2, 3, 4, 6, 8, 9})); //0,1,2,4,5,7
+        System.out.println(summaryRanges(new int[]{0, 1, 2, 4, 5, 7})); //0,1,2,4,5,7
+
         // update
+    }
+
+    public List<String> summaryRanges(int[] nums) {
+        List<String> result = new ArrayList<>();
+        if (nums.length == 0) {
+            return result;
+        }
+
+        if (nums.length == 1) {
+            result.add(String.valueOf(nums[0]));
+            return result;
+        }
+
+        int start = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if (i == nums.length - 1) {
+                if (nums[i] - nums[i - 1] != 1) {
+                    if (start == nums[i - 1]) {
+                        result.add(String.valueOf(start));
+                    } else {
+                        result.add(start + "->" + nums[i - 1]);
+                    }
+                    start = nums[i];
+                    result.add(String.valueOf(start));
+                } else {
+                    if (start == nums[i]) {
+                        result.add(String.valueOf(start));
+                    } else {
+                        result.add(start + "->" + nums[i]);
+                    }
+                }
+
+                return result;
+            }
+
+            if (nums[i] - nums[i - 1] != 1) {
+                if (start == nums[i - 1]) {
+                    result.add(String.valueOf(start));
+                } else {
+                    result.add(start + "->" + nums[i - 1]);
+                }
+                start = nums[i];
+            }
+        }
+
+        return result;
     }
 
     public int minimumOperations2(int[] nums) {
